@@ -10,9 +10,8 @@
 <body>
   <!-- begin notifications -->
   <div class="block">
-    <div id="notification" class="notification is-danger is-hidden">
-        <button class="delete"></button>
-        teste
+    <div id="notification" class="notification is-hidden">
+        <button class="delete">X</button>
      </div>
     </div>
   <!-- end notifications -->
@@ -112,7 +111,7 @@
             <div class="">
               <p class="control is-expanded has-icons-left has-icons-right">
                 <div class="">
-                  <button class="button is-success" onClick="deleteAllObjects()" >Save List</button>
+                  <button class="button is-success" onClick="saveList()" >Save List</button>
                 </div>
               </p>
             </div>
@@ -121,7 +120,7 @@
             <div class="">
               <p class="control is-expanded has-icons-left has-icons-right">
                 <div class="">
-                  <button class="button is-warning" onClick="deleteAllObjects()" >Clean List</button>
+                  <button id="buttonClearList" class="button is-warning" onClick="openModal(this)" >Clear List</button>
                 </div>
               </p>
             </div>
@@ -157,6 +156,25 @@
         </table>
     </div>
 <!-- end table -->
+
+<!-- begin modal-->
+<div id ="modal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p id = "modal-title" class="modal-card-title">Title</p>
+      <button class="delete" aria-label="close" onclick='closeModal()'></button>
+    </header>
+    <section id = "modal-content" class="modal-card-body">
+      <!-- Content ... -->
+    </section>
+    <footer class="modal-card-foot">
+      <button id="modal-cancel-button"  class="button" onclick='closeModal()'>Cancel</button>
+      <button id="modal-save-button" class="button " onclick='saveModal(this)'>Save changes</button>
+    </footer>
+  </div>
+</div>
+<!-- end modal-->
 
 
 <!-- begin footer -->

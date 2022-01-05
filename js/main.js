@@ -1,8 +1,9 @@
-let objects = [
-	{name:'claudio', weight: '1', group: '2'},
-	{name:'claudio1', weight: '1', group: '2'},
-	{name:'claudio2', weight: '1', group: '2'}
-]
+// let objects = JSON.parse(localStorage.getItem["list1"]) : []
+
+let objects = JSON.parse(localStorage.getItem("lista1"))
+
+!objects ? objects=[] : 
+
 
 renderTable(objects)
 
@@ -73,15 +74,70 @@ function renderTable(objects){
 		renderTable(objects)
 	}
 
-	function deleteAllObjects(row)
+
+
+
+	function deleteAllObjects()
 	{
-		objects = [];
-		renderTable(objects)
+		// objects = [];
+		// renderTable(objects)
+		document.getElementById('modal').classList.add('is-active');
 	}
 
-	function sendNotification(){
-		document.getElementById('notification').innerHTML="abc"
-		document.getElementById('notification').classList.remove("is-hidden")
+	function openModal(sourceElement)
+	{	
+		document.getElementById('modal').classList.add('is-active');
+		elementId = sourceElement.id
+
+		switch (elementId) {
+			case 'buttonClearList':
+				document.getElementById('modal-title').innerHTML = 'Erase All Records?'
+				document.getElementById('modal-content').innerHTML = 'Are You Sure that you wish to delete all data in the list?'
+				document.getElementById('modal-save-button').innerHTML = 'Erase'
+				document.getElementById('modal-save-button').classList.add('is-warning')
+				document.getElementById('modal-save-button').classList.add('buttonClearList')
+				break;
+			default:
+				break;
+		}
+
+	}
+
+	function saveModal()
+	{
+		// objects = [];
+		// renderTable(objects)
+		//document.getElementById('modal').classList.remove('is-active');
+		sendNotification('is-danger','teste')
+	}
+
+
+	function closeModal()
+	{
+		// objects = [];
+		// renderTable(objects)
+		document.getElementById('modal').classList.remove('is-active');
+		sendNotification('is-primary','test2e')
+	}
+
+
+	function saveList()
+	{
+		localStorage.setItem('lista1', JSON.stringify(objects))
+	}
+
+
+	function sendNotification(type,message,light){
+		document.getElementById('notification').innerHTML=message
+
+		document.getElementById('notification').classList.add(type)
+		document.getElementById('notification').classList.forEach(function(value,index){
+			if(value.slice(0,3) == "is-"){
+				document.getElementById('notification').classList.remove(value)
+			}
+
+		})
+
 	}
 
 // if(!objects){
