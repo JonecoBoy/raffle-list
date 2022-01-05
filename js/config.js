@@ -1,13 +1,9 @@
 function setConfig(){
     var texts ={
-        "title" : "Shopping Joneco"
+        "title" : "Raffle-Js"
     };
     document.title = texts.title;
-    document.getElementById ("navTitle").innerHTML=texts.title;
 }
-
-
-
 
 
 setConfig();
