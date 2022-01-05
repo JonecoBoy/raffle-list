@@ -1,10 +1,11 @@
 let objects = [
 	{name:'claudio', weight: '1', group: '2'},
-	{name:'claudio', weight: '1', group: '2'},
-	{name:'claudio', weight: '1', group: '2'}
+	{name:'claudio1', weight: '1', group: '2'},
+	{name:'claudio2', weight: '1', group: '2'}
 ]
 
 renderTable(objects)
+
 
 function renderTable(objects){
 	let body = document.getElementById("table-peoples").getElementsByTagName("tbody")[0]
@@ -13,24 +14,75 @@ function renderTable(objects){
 	objects.forEach(function(value,index)
 	{
 		index = index+1;
-		html +=  "<tr id=tr"+index+">" +
+		html +=  "<tr id=tr"+index+" onMouseOver='colorSelected(event.type,this.id)' onMouseOut='colorSelected(event.type,this.id)'>" +
 				"<td>"+ index +"</td>" +
 				"<td>"+value.name+"</td>" +
 				"<td>"+value.weight+"</td>" +
 				"<td>"+value.group+"</td>" +
 				"<td>" +
 				"<div class='buttons'>" +
-				"<button class='button is-info is-small'>editar</button>" +
-				"<button class='button is-danger is-small'>deletar</button>" +
+				"<button class='button is-info is-small is-light'>editar</button>" +
+				"<button class='button is-danger is-small is-light' onclick=deleteObject('"+index+"')>deletar</button>" +
 				"</div>" +
 				"</td>" +
 				"</tr>"
 	})
 	body.innerHTML = html
-
 	}
 
+	function colorSelected(eventType,row){
 
+		let buttons = document.getElementById(row).getElementsByTagName("button")
+		let numberOfButtons = buttons.length
+
+		switch (eventType) {
+
+			case "mouseover":
+				document.getElementById(row).classList.add("is-selected")
+				for(let i=0;i<numberOfButtons;i++){
+					buttons[i].classList.remove("is-light")
+				}		
+				break;
+
+			default:
+				document.getElementById(row).classList.remove("is-selected")
+				for(let i=0;i<numberOfButtons;i++){
+					buttons[i].classList.add("is-light")
+				}	
+				break;
+		}
+	}
+
+	function createObject()
+	{
+		let name = document.getElementById("name").value
+		let weight = document.getElementById("weight").value
+		let group = document.getElementById("group").value
+		
+		objects.push({name: name, weight: weight, group: group})
+
+		renderTable(objects)
+	}
+
+	function deleteObject(row)
+	{
+		row = parseInt(row-1)
+		
+		objects.splice(row,1)
+
+		renderTable(objects)
+	}
+
+	function deleteAllObjects(row)
+	{
+		objects = [];
+		renderTable(objects)
+	}
+
+	function sendNotification(){
+		document.getElementById('notification').innerHTML="abc"
+		document.getElementById('notification').classList.remove("is-hidden")
+	}
 
 // if(!objects){
 // 	objects=[]
