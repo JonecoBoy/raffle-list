@@ -108,7 +108,8 @@ function renderTable(objects){
 		// objects = [];
 		// renderTable(objects)
 		//document.getElementById('modal').classList.remove('is-active');
-		sendNotification('is-danger','teste')
+		document.getElementById('modal').classList.remove('is-active');
+		sendNotification('is-danger','saved',false)
 	}
 
 
@@ -117,7 +118,7 @@ function renderTable(objects){
 		// objects = [];
 		// renderTable(objects)
 		document.getElementById('modal').classList.remove('is-active');
-		sendNotification('is-primary','test2e')
+		sendNotification('is-info','modal was closed',true)
 	}
 
 
@@ -128,15 +129,15 @@ function renderTable(objects){
 
 
 	function sendNotification(type,message,light){
-		document.getElementById('notification').innerHTML=message
+		document.getElementById('notification').innerHTML=message	
 
-		document.getElementById('notification').classList.add(type)
 		document.getElementById('notification').classList.forEach(function(value,index){
 			if(value.slice(0,3) == "is-"){
 				document.getElementById('notification').classList.remove(value)
 			}
-
 		})
+		document.getElementById('notification').classList.add(type)
+		light==true ? document.getElementById('notification').classList.add("is-light") : null
 
 	}
 
