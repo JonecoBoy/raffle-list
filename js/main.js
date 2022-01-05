@@ -1,17 +1,35 @@
 let objects = [
-	{nome:'claudio', peso: '1', grupo: '2'},
-	{nome:'claudio', peso: '1', grupo: '2'},
-	{nome:'claudio', peso: '1', grupo: '2'}
+	{name:'claudio', weight: '1', group: '2'},
+	{name:'claudio', weight: '1', group: '2'},
+	{name:'claudio', weight: '1', group: '2'}
 ]
 
 renderTable(objects)
 
 function renderTable(objects){
-	objects.array.forEach(element => {
-		console.log(element.value)
-	});
+	let body = document.getElementById("table-peoples").getElementsByTagName("tbody")[0]
+	
+	let html = "";
+	objects.forEach(function(value,index)
+	{
+		index = index+1;
+		html +=  "<tr id=tr"+index+">" +
+				"<td>"+ index +"</td>" +
+				"<td>"+value.name+"</td>" +
+				"<td>"+value.weight+"</td>" +
+				"<td>"+value.group+"</td>" +
+				"<td>" +
+				"<div class='buttons'>" +
+				"<button class='button is-info is-small'>editar</button>" +
+				"<button class='button is-danger is-small'>deletar</button>" +
+				"</div>" +
+				"</td>" +
+				"</tr>"
+	})
+	body.innerHTML = html
+
 	}
-}
+
 
 
 // if(!objects){
