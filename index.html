@@ -8,11 +8,17 @@
 <title></title>
 </head>
 <body>
+  <!-- begin notifications -->
+  <div class="block">
     <div class="notification is-danger" hidden>
         <button class="delete"></button>
         teste
      </div>
+    </div>
+  <!-- end notifications -->
 
+  <!-- begin navbar-->
+  <div class="block">
      <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href="./">
@@ -58,12 +64,73 @@
             </div>
           </div>
       </nav>
+    </div>
+    <!-- end navbar -->
 
-    <!-- fim do navbar -->
+    <!-- begin add/delte buttons -->
+    <div class="box ml-5 mr-5">
+      <div class="field is-horizontal">
+        
+        <div class="field-body">
+          <div class="field">
+            <p class="control is-expanded has-icons-left">
+              <input class="input" type="text" placeholder="Name">
+              <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control is-expanded has-icons-left has-icons-right">
+              <input class="input is-success" type="email" placeholder="Email" value="alex@smith.com">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control is-expanded has-icons-left has-icons-right">
+              <input class="input is-success" type="email" placeholder="Email" value="alex@smith.com">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control is-expanded has-icons-left has-icons-right">
+              <input class="input is-success" type="email" placeholder="Email" value="alex@smith.com">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control is-expanded has-icons-left has-icons-right">
+          <button class="button is-success">Create</button>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control is-expanded has-icons-left has-icons-right">
+        <button class="button is-warning">Clean List</button>
+            </p>
+          </div>
+        </div>
+      </div>
+  </div>
+    <!-- end add/delte buttons -->
 
-    <!-- inicio tablea -->
+    <!-- begin table -->
     <div class="container is-widescreen">  
-        <table class="table">
+        <table class="table is-fullwidth" id="table-peoples">
             <thead>
             <tr>
                 <th>ID</th>
@@ -83,22 +150,13 @@
             </tr>
             </tfoot>
             <tbody>
-              <tr class="is-selected">
-                <th>1</th>
-                <td>Nome 1</td>
-                <td>Peso1</td>
-                <td><strong>Grupo</strong></td>
-                <td>Editar | Deletar</td>
-  
-            </tr>
-           
             </tbody>
         </table>
     </div>
+<!-- end table -->
 
 
-
-
+<!-- begin footer -->
     <footer class="footer">
         <div class="content has-text-centered">
           <p>
@@ -108,8 +166,12 @@
           </p>
         </div>
       </footer>
+<!-- end footer  -->
+
+<!-- scripts-->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
+  <script src="https://kit.fontawesome.com/1de12a37fa.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
