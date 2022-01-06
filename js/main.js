@@ -63,19 +63,73 @@ function renderTable(objects){
 		objects.push({name: name, weight: weight, group: group})
 
 		renderTable(objects)
+
+		document.getElementById('modal').classList.remove('is-active');
+		sendNotification('is-success', name + ' added',true)
 	}
 
 	function deleteObject(row)
 	{
-		row = parseInt(row-1)
+		// row = parseInt(row-1)
 		
-		objects.splice(row,1)
+		// let deleteObject = objects[row]
+		// objects.splice(row,1)
+		// console.log(deleteObject)
+		// renderTable(objects)
+		// document.getElementById('modal').classList.remove('is-active');
+		// sendNotification('is-warning',deleteObject.name +' removed',true)
+		var confirmButton = document.createElement("div")
+		confirmButton.id = 'confirmButton'
+		confirmButton.class = 'sticky'
+		confirmButton.innerHTML = '<div class="dropdown is-hoverable is-small">'+
+		'<div class="dropdown-trigger">'+
+		  '<button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu3">'+
+		  '<span>Confirm</span>'+
+			'<span class="icon is-small">'+
+			'<i class="fas fa-angle-down" aria-hidden="true"></i>'+
+			  '</span>'+
+			'</button>'+
+		  '</div>'+
+		'<div class="dropdown-menu" id="dropdown-menu3" role="menu">'+
+		  '<div class="dropdown-content is-small p-1">'+
+		  '<div class="dropdown-item is-small p-1" style="">'+
+			'<a href="#" class="dropdown-item is-small" onclick="confirmDelteObject('+row+')">yes</a>'+
+			  '</div>'+
+			'</div>'+
+			'<div class="dropdown-content is-small p-1">'+
+		  '<div class="dropdown-item is-small p-1">'+
+		  '<a href="#" class="dropdown-item is-small centered" onclick="cancelDelteObject()">no</a>'+
+			  '</div>'+
+			'</div>'+
+		  '</div>'+
+	  '</div>'
 
-		renderTable(objects)
+	//   avoid creating more than one button
+	  if(document.getElementById('confirmButton')){
+	  var botao = document.getElementById('confirmButton')
+	  botao.parentNode.removeChild(botao)
+	  }
+		document.getElementById("tr"+row).getElementsByClassName('buttons')[0].appendChild (confirmButton)
+		
 	}
 
+	function cancelDelteObject(){
+		var botao = document.getElementById('confirmButton')
+		botao.parentNode.removeChild(botao)
+	}
 
-
+	function confirmDelteObject(row){
+		var botao = document.getElementById('confirmButton')
+		botao.parentNode.removeChild(botao)
+		row = parseInt(row-1)
+		
+		let deleteObject = objects[row]
+		objects.splice(row,1)
+		console.log(deleteObject)
+		renderTable(objects)
+		document.getElementById('modal').classList.remove('is-active');
+		sendNotification('is-warning',deleteObject.name +' removed',true)
+	}
 
 	function deleteAllObjects()
 	{
@@ -94,6 +148,7 @@ function renderTable(objects){
 				document.getElementById('modal-title').innerHTML = 'Erase All Records?'
 				document.getElementById('modal-content').innerHTML = 'Are You Sure that you wish to delete all data in the list?'
 				document.getElementById('modal-save-button').innerHTML = 'Erase'
+				
 				document.getElementById('modal-save-button').classList.add('is-warning')
 				document.getElementById('modal-save-button').classList.add('buttonClearList')
 				break;
@@ -105,11 +160,10 @@ function renderTable(objects){
 
 	function saveModal()
 	{
-		// objects = [];
-		// renderTable(objects)
-		//document.getElementById('modal').classList.remove('is-active');
+		 objects = [];
+		 renderTable(objects)
 		document.getElementById('modal').classList.remove('is-active');
-		sendNotification('is-danger','saved',false)
+		sendNotification('is-danger','List deleted',false)
 	}
 
 
@@ -118,28 +172,37 @@ function renderTable(objects){
 		// objects = [];
 		// renderTable(objects)
 		document.getElementById('modal').classList.remove('is-active');
-		sendNotification('is-info','modal was closed',true)
+		//sendNotification('is-info','modal was closed',true)
 	}
 
 
 	function saveList()
 	{
 		localStorage.setItem('lista1', JSON.stringify(objects))
+		document.getElementById('modal').classList.remove('is-active');
+		sendNotification('is-danger','List Saved',false)
 	}
 
-
 	function sendNotification(type,message,light){
-		document.getElementById('notification').innerHTML=message	
+		document.getElementById('notification').innerHTML='<button class="delete" onClick="closeNotification()"></button>' + message
+			
 
 		document.getElementById('notification').classList.forEach(function(value,index){
 			if(value.slice(0,3) == "is-"){
 				document.getElementById('notification').classList.remove(value)
+				
 			}
 		})
 		document.getElementById('notification').classList.add(type)
 		light==true ? document.getElementById('notification').classList.add("is-light") : null
 
 	}
+
+	function closeNotification(){
+		document.getElementById('notification').classList.add('is-hidden');
+	}
+
+//TODO add colapse
 
 // if(!objects){
 // 	objects=[]
