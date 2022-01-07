@@ -22,7 +22,7 @@ function renderTable(objects){
 				"<td>"+value.group+"</td>" +
 				"<td>" +
 				"<div class='buttons'>" +
-				"<button class='button is-info is-small is-light'>editar</button>" +
+				"<button class='button is-info is-small is-light' onclick=editObject('"+index+"')>editar</button>" +
 				"<button class='button is-danger is-small is-light' onclick=deleteObject('"+index+"')>deletar</button>" +
 				"</div>" +
 				"</td>" +
@@ -131,11 +131,88 @@ function renderTable(objects){
 		sendNotification('is-warning',deleteObject.name +' removed',true)
 	}
 
-	function deleteAllObjects()
+	function deleteList()
 	{
-		// objects = [];
-		// renderTable(objects)
-		document.getElementById('modal').classList.add('is-active');
+		objects = [];
+		renderTable(objects)
+	   document.getElementById('modal').classList.remove('is-active');
+	   sendNotification('is-danger','List deleted',false)
+		
+		
+	}
+
+	function saveList()
+	{
+		localStorage.setItem('lista1', JSON.stringify(objects))
+		document.getElementById('modal').classList.remove('is-active');
+		sendNotification('is-success','List Saved',false)
+		
+	}
+
+
+	function editObject (row){
+		let tr = document.getElementById('tr'+row)
+		data = []
+
+
+		tr.childNodes.forEach(function(value,index){
+			if(index!=0){
+			if (index <4){
+				data [index] = value.innerHTML
+			value.innerHTML= '<input class="input is-small" type="text" placeholder="Small input" value ="'+value.innerHTML+'">'
+			}
+			else{
+				value.innerHTML="<div class='buttons'>" + 				
+								"<button class='button is-primary is-small is-light' onclick=confirmEditObject('"+row+"')>Confirmar</button>" +
+								"<button class='button is-warning is-small is-light' onclick=cancelEditObject('"+[row,data]+"')>Cancelar</button>" +
+								"</div>"
+			}
+		}
+		})
+	}
+
+	function confirmEditObject(row){
+		
+		tr = document.getElementById("tr"+row)
+		row = row-1
+		console.log(tr)
+		let name = tr.getElementsByTagName("input")[0].value
+		let weight = tr.getElementsByTagName("input")[1].value
+		let group = tr.getElementsByTagName("input")[2].value
+		
+		console.log(objects[row])
+
+		object = {
+					name: 	name,
+					weight: weight,
+					group:	group
+		}
+
+		console.log(object)
+
+		objects[row] = object
+		renderTable(objects)
+		sendNotification('is-success','teste Saved',true)
+	}
+
+
+	function cancelEditObject(data)
+	{
+		// row = data[0]
+
+		// html = "<td>"+ row +"</td>" +
+		// "<td>"+row+"</td>" +
+		// "<td>"+row+"</td>" +
+		// "<td>"+row+"</td>" +
+		// "<td>" +
+		// "<div class='buttons'>" +
+		// "<button class='button is-info is-small is-light' onclick=editObject('"+row+"')>editar</button>" +
+		// "<button class='button is-danger is-small is-light' onclick=deleteObject('"+row+"')>deletar</button>" +
+		// "</div>" +
+		// "</td>" 
+
+		// document.getElementById("tr"+row).innerHTML=html
+		renderTable(objects)
 	}
 
 	function openModal(sourceElement)
@@ -145,6 +222,7 @@ function renderTable(objects){
 
 		switch (elementId) {
 			case 'buttonClearList':
+				
 				document.getElementById('modal-title').innerHTML = 'Erase All Records?'
 				document.getElementById('modal-content').innerHTML = 'Are You Sure that you wish to delete all data in the list?'
 				document.getElementById('modal-save-button').innerHTML = 'Erase'
@@ -152,7 +230,17 @@ function renderTable(objects){
 				document.getElementById('modal-save-button').classList.add('is-warning')
 				document.getElementById('modal-save-button').classList.add('buttonClearList')
 				break;
+			case 'buttonSaveList':
+
+				document.getElementById('modal-title').innerHTML = 'Save All Records?'
+				document.getElementById('modal-content').innerHTML = 'Are You Sure that you wish to Overwrite all data in the list?'
+				document.getElementById('modal-save-button').innerHTML = 'Save'
+				
+				document.getElementById('modal-save-button').classList.add('is-primary')
+				document.getElementById('modal-save-button').classList.add('buttonSaveList')
+				break;
 			default:
+
 				break;
 		}
 
@@ -160,10 +248,22 @@ function renderTable(objects){
 
 	function saveModal()
 	{
-		 objects = [];
-		 renderTable(objects)
-		document.getElementById('modal').classList.remove('is-active');
-		sendNotification('is-danger','List deleted',false)
+
+		let saveButton = document.getElementById('modal-save-button').innerHTML
+
+		switch (saveButton) {
+			case 'Erase':
+				deleteList()
+				break;
+
+			case 'Save':
+				saveList()
+				break;
+		
+			default:
+				break;
+		}
+
 	}
 
 
@@ -176,13 +276,6 @@ function renderTable(objects){
 	}
 
 
-	function saveList()
-	{
-		localStorage.setItem('lista1', JSON.stringify(objects))
-		document.getElementById('modal').classList.remove('is-active');
-		sendNotification('is-danger','List Saved',false)
-	}
-
 	function sendNotification(type,message,light){
 		document.getElementById('notification').innerHTML='<button class="delete" onClick="closeNotification()"></button>' + message
 			
@@ -194,7 +287,7 @@ function renderTable(objects){
 			}
 		})
 		document.getElementById('notification').classList.add(type)
-		light==true ? document.getElementById('notification').classList.add("is-light") : null
+		light==true ? document.getElementById('notification').classList.add("is-light") : document.getElementById('notification').classList.remove("is-light")
 
 	}
 
