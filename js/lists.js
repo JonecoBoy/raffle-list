@@ -26,7 +26,7 @@ function renderListMenu(){
 	let listMenu = document.getElementById('navLists').getElementsByClassName('top')[0]
 	let html = ''
 	lists.forEach(function (value,index){
-		html += '<a href="list.html&id='+ (index+1) +'" class="navbar-item">'+
+		html += '<a href="list.html?id='+ (index+1) +'" class="navbar-item">'+
 		value.name+
 		'</a>'
 	})
