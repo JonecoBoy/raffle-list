@@ -4,6 +4,17 @@ let objects = JSON.parse(localStorage.getItem("lista1"))
 
 !objects ? objects=[] : 
 
+groups = [
+	{name: 	'inscrito',
+	 weight: 1},
+	 {name: 'membro',
+	 weight: 2},
+	 {name: 'super membro',
+	 weight: 3},
+	 {name: 'super super membro',
+	 weight: 3}
+]
+
 
 renderTable(objects)
 
@@ -19,16 +30,26 @@ function renderTable(objects){
 				"<td>"+ index +"</td>" +
 				"<td>"+value.name+"</td>" +
 				"<td>"+value.weight+"</td>" +
-				"<td>"+value.group+"</td>" +
+				"<td>"+groups[value.group].name+"</td>" +
 				"<td>" +
 				"<div class='buttons'>" +
-				"<button class='button is-info is-small is-light' onclick=editObject('"+index+"')>editar</button>" +
-				"<button class='button is-danger is-small is-light' onclick=deleteObject('"+index+"')>deletar</button>" +
+				"<button class='button is-info is-small is-light' onclick=editObject('"+index+"')>edit</button>" +
+				"<button class='button is-danger is-small is-light' onclick=deleteObject('"+index+"')>delete</button>" +
 				"</div>" +
 				"</td>" +
 				"</tr>"
 	})
 	body.innerHTML = html
+
+// Groups Create Table
+document.getElementById('groupListCreate').innerHTML=""
+	groups.forEach(function(value,index){
+		let option = document.createElement('option')
+		option.innerHTML=value.name
+		document.getElementById('groupListCreate').appendChild(option)
+	})
+	
+
 	}
 
 	function colorSelected(eventType,row){
@@ -58,7 +79,7 @@ function renderTable(objects){
 	{
 		let name = document.getElementById("name").value
 		let weight = document.getElementById("weight").value
-		let group = document.getElementById("group").value
+		let group = document.getElementById("groupListCreate").selectedIndex
 		
 		objects.push({name: name, weight: weight, group: group})
 
@@ -157,14 +178,29 @@ function renderTable(objects){
 
 		tr.childNodes.forEach(function(value,index){
 			if(index!=0){
-			if (index <4){
+			if (index <3){
 				data [index] = value.innerHTML
 			value.innerHTML= '<input class="input is-small" type="text" placeholder="Small input" value ="'+value.innerHTML+'">'
 			}
+			else if(index ==3){
+				value.innerHTML= 	'<div class="select is-small">'+
+									'<select id="groupList">'+
+									'</select>'+
+									'</div>'
+									html = "";
+									let groupList = document.getElementById('groupList')
+									groups.forEach(function (value,index){
+										let groupOption = document.createElement('option')
+										groupOption.innerHTML = value.name
+										groupList.appendChild(groupOption)
+
+									})
+					
+			}
 			else{
 				value.innerHTML="<div class='buttons'>" + 				
-								"<button class='button is-primary is-small is-light' onclick=confirmEditObject('"+row+"')>Confirmar</button>" +
-								"<button class='button is-warning is-small is-light' onclick=cancelEditObject('"+[row,data]+"')>Cancelar</button>" +
+								"<button class='button is-primary is-small is-light' onclick=confirmEditObject('"+row+"')>Confirm</button>" +
+								"<button class='button is-warning is-small is-light' onclick=cancelEditObject('"+[row,data]+"')>Cancel</button>" +
 								"</div>"
 			}
 		}
@@ -178,10 +214,9 @@ function renderTable(objects){
 		console.log(tr)
 		let name = tr.getElementsByTagName("input")[0].value
 		let weight = tr.getElementsByTagName("input")[1].value
-		let group = tr.getElementsByTagName("input")[2].value
+		//let group = tr.getElementsByTagName("input")[2].value
+		let group = tr.getElementsByTagName("select")[0].selectedIndex
 		
-		console.log(objects[row])
-
 		object = {
 					name: 	name,
 					weight: weight,
@@ -206,7 +241,7 @@ function renderTable(objects){
 		// "<td>"+row+"</td>" +
 		// "<td>" +
 		// "<div class='buttons'>" +
-		// "<button class='button is-info is-small is-light' onclick=editObject('"+row+"')>editar</button>" +
+		// "<button class='button is-info is-small is-light' onclick=editObject('"+row+"')>edit</button>" +
 		// "<button class='button is-danger is-small is-light' onclick=deleteObject('"+row+"')>deletar</button>" +
 		// "</div>" +
 		// "</td>" 
@@ -279,7 +314,7 @@ function renderTable(objects){
 	function sendNotification(type,message,light){
 		document.getElementById('notification').innerHTML='<button class="delete" onClick="closeNotification()"></button>' + message
 			
-
+		document.getElementById('notification').classList.remove('is-hidden')
 		document.getElementById('notification').classList.forEach(function(value,index){
 			if(value.slice(0,3) == "is-"){
 				document.getElementById('notification').classList.remove(value)
@@ -288,11 +323,19 @@ function renderTable(objects){
 		})
 		document.getElementById('notification').classList.add(type)
 		light==true ? document.getElementById('notification').classList.add("is-light") : document.getElementById('notification').classList.remove("is-light")
-
+		setTimeout(closeNotification, 3000)
 	}
 
 	function closeNotification(){
-		document.getElementById('notification').classList.add('is-hidden');
+		document.getElementById('notification').classList.forEach(function(value,index){
+			if(value.slice(0,3) == "is-"){
+				document.getElementById('notification').classList.remove(value)
+				
+			}
+		})
+		
+		document.getElementById('notification').classList.add('is-hidden')
+		
 	}
 
 //TODO add colapse
