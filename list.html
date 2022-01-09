@@ -36,19 +36,25 @@
               Documentation
             </a>
 
-            <a class="navbar-item">
-              Grupos
+            <a href="groups.html" class="navbar-item">
+              Groups
             </a>
       
-            <div id="navLists" class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
-                Listas
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a href = 'lists.html' class="navbar-link">
+                Lists
               </a>
       
               <div class="navbar-dropdown">
-                <div class="top">
-                  <!-- place menu elements here -->
-              </div>
+                <a class="navbar-item">
+                  About
+                </a>
+                <a class="navbar-item">
+                  Jobs
+                </a>
+                <a class="navbar-item">
+                  Contact
+                </a>
                 <hr class="navbar-divider">
                 <a class="navbar-item">
                   Listar Todas
@@ -73,25 +79,47 @@
               </span>
             </p>
           </div>
-
           <div class="field">
             <p class="control is-expanded has-icons-left has-icons-right">
-              <input id="description" class="input is-success" type="text" placeholder="Description">
+              <input id="weight" class="input is-success" type="text" placeholder="Weight">
               <span class="icon is-small is-left">
-                <i class="fas fa-clipboard"></i>
+                <i class="fas fa-weight-hanging"></i>
               </span>
               <span class="icon is-small is-right">
                 <i class="fas fa-check"></i>
               </span>
             </p>
           </div>
+          <div class="field">
+            <div class="control has-icons-left">
+              <div class="select">
+                <select id ='groupListCreate'>
+                  <option selected>Groups</option>
+                </select>
+              </div>
+              <div class="icon is-small is-left">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+          </div>
+
+
+          
 
           <div class="field">
             <p class="control is-expanded has-icons-left has-icons-right">
-          <button class="button is-success" onClick="createObject()">Create List</button>
+          <button class="button is-link" onClick="createObject()">Create</button>
             </p>
           </div>
-
+          <div class="field">
+            <div class="">
+              <p class="control is-expanded has-icons-left has-icons-right">
+                <div class="">
+                  <button id ="buttonSaveList" class="button is-success" onClick="openModal(this)" >Save List</button>
+                </div>
+              </p>
+            </div>
+          </div>
           <div class="field">
             <div class="">
               <p class="control is-expanded has-icons-left has-icons-right">
@@ -108,12 +136,13 @@
 
     <!-- begin table -->
     <div class="container is-widescreen">  
-        <table class="table is-fullwidth" id="table-lists">
+        <table class="table is-fullwidth" id="table-people">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Descricao</th>
+                <th>Peso</th>
+                <th>Grupo</th>
                 <th>Ação</th>
             </tr>
             </thead>
@@ -121,7 +150,8 @@
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Descricao</th>
+                <th>Peso</th>
+                <th>Grupo</th>
                 <th>Ação</th>
             </tr>
             </tfoot>
@@ -165,7 +195,7 @@
 
 <!-- scripts-->
   <script src="js/config.js"></script>
-  <script src="js/lists.js"></script>
+  <script src="js/main.js"></script>
   <script src="https://kit.fontawesome.com/1de12a37fa.js" crossorigin="anonymous"></script>
 </body>
 
