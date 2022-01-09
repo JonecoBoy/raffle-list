@@ -1,30 +1,40 @@
 // let objects = JSON.parse(localStorage.getItem["list1"]) : []
 
-let objects = JSON.parse(localStorage.getItem("lista1"))
-
-!objects ? objects=[] : null
-
 let groups = JSON.parse(localStorage.getItem("groups"))
-console.log(groups)
-!groups ? groups=[{name:'default',weight: 1}] : null
+
+!groups ? groups=[] : 
+
+// groups = [
+// 	{name: 	'inscrito',
+// 	 weight: 1,
+// 	description: 'desc 1'},
+// 	 {name: 'membro',
+// 	 weight: 2,
+// 	 description: 'desc 2'},
+// 	 {name: 'super membro',
+// 	 weight: 3,
+// 	 description: 'desc 3'},
+// 	 {name: 'super super membro',
+// 	 weight: 3,
+// 	 description: 'desc 4'}
+// ]
 
 
+renderTable(groups)
 
-renderTable(objects)
 
-
-function renderTable(objects){
-	let body = document.getElementById("table-people").getElementsByTagName("tbody")[0]
+function renderTable(groups){
+	let body = document.getElementById("table-groups").getElementsByTagName("tbody")[0]
 	
 	let html = "";
-	objects.forEach(function(value,index)
+	groups.forEach(function(value,index)
 	{
 		index = index+1;
 		html +=  "<tr id=tr"+index+" onMouseOver='colorSelected(event.type,this.id)' onMouseOut='colorSelected(event.type,this.id)'>" +
 				"<td>"+ index +"</td>" +
 				"<td>"+value.name+"</td>" +
 				"<td>"+value.weight+"</td>" +
-				"<td>"+ (groups[value.group] ? groups[value.group].name : 'not found') +"</td>" +
+				"<td>"+value.description+"</td>" +
 				"<td>" +
 				"<div class='buttons'>" +
 				"<button class='button is-info is-small is-light' onclick=editObject('"+index+"')>edit</button>" +
@@ -35,17 +45,7 @@ function renderTable(objects){
 	})
 	body.innerHTML = html
 
-// Groups Create Table
-document.getElementById('groupListCreate').innerHTML=""
-		let option = document.createElement('option')
-		option.innerHTML="Select Group"
-		document.getElementById('groupListCreate').appendChild(option)
-	groups.forEach(function(value,index){
-		let option = document.createElement('option')
-		option.innerHTML=value.name
-		document.getElementById('groupListCreate').appendChild(option)
-	})
-	
+
 
 	}
 
@@ -76,19 +76,19 @@ document.getElementById('groupListCreate').innerHTML=""
 	{
 		let name = document.getElementById("name").value
 		let weight = document.getElementById("weight").value
-		let group = document.getElementById("groupListCreate").selectedIndex -1
+		let description = document.getElementById("description").value
 		
-		objects.push({name: name, weight: weight, group: group})
+		groups.push({name: name, weight: weight, description: description})
 
-		renderTable(objects)
+		renderTable(groups)
 
-		closeModal()
+		document.getElementById('modal').classList.remove('is-active');
 		sendNotification('is-success', name + ' added',true)
 	}
 
 	function deleteObject(row)
 	{
-		
+
 		var confirmButton = document.createElement("div")
 		confirmButton.id = 'confirmButton'
 		confirmButton.class = 'sticky'
@@ -134,18 +134,18 @@ document.getElementById('groupListCreate').innerHTML=""
 		botao.parentNode.removeChild(botao)
 		row = parseInt(row-1)
 		
-		let deleteObject = objects[row]
-		objects.splice(row,1)
+		let deleteObject = groups[row]
+		groups.splice(row,1)
 		console.log(deleteObject)
-		renderTable(objects)
-		closeModal()
+		renderTable(groups)
+		document.getElementById('modal').classList.remove('is-active');
 		sendNotification('is-warning',deleteObject.name +' removed',true)
 	}
 
 	function deleteList()
 	{
-		objects = [];
-		renderTable(objects)
+		groups = [];
+	   renderTable(groups)
 	   closeModal()
 	   sendNotification('is-danger','List deleted',false)
 		
@@ -154,42 +154,25 @@ document.getElementById('groupListCreate').innerHTML=""
 
 	function saveList()
 	{
-		localStorage.setItem('lista1', JSON.stringify(objects))
-		closeModal()
+		localStorage.setItem('groups', JSON.stringify(groups))
+		document.getElementById('modal').classList.remove('is-active');
 		sendNotification('is-success','List Saved',false)
 		
 	}
 
 
 	function editObject (row){
-		cancelEditObject()
 		let tr = document.getElementById('tr'+row)
 		data = []
 
 
 		tr.childNodes.forEach(function(value,index){
 			if(index!=0){
-			if (index <3){
+			if (index <4){
 				data [index] = value.innerHTML
 			value.innerHTML= '<input class="input is-small" type="text" placeholder="Small input" value ="'+value.innerHTML+'">'
 			}
-			else if(index ==3){
-				value.innerHTML= 	'<div class="select is-small">'+
-									'<select id="groupList">'+
-									'</select>'+
-									'</div>'
-									html = "";
-									let groupList = document.getElementById('groupList')
-									groups.forEach(function (value,index){
-										let groupOption = document.createElement('option')
-										groupOption.innerHTML = value.name
-										groupList.appendChild(groupOption)
 
-									})
-									groupList.selectedIndex=objects[row].group
-									
-					
-			}
 			else{
 				value.innerHTML="<div class='buttons'>" + 				
 								"<button class='button is-primary is-small is-light' onclick=confirmEditObject('"+row+"')>Confirm</button>" +
@@ -207,24 +190,22 @@ document.getElementById('groupListCreate').innerHTML=""
 		console.log(tr)
 		let name = tr.getElementsByTagName("input")[0].value
 		let weight = tr.getElementsByTagName("input")[1].value
-		//let group = tr.getElementsByTagName("input")[2].value
-		let group = tr.getElementsByTagName("select")[0].selectedIndex
+		let description = tr.getElementsByTagName("input")[2].value
 		
-		object = {
+		group = {
 					name: 	name,
 					weight: weight,
-					group:	group
+					description:	description,
 		}
 
-		console.log(object)
 
-		objects[row] = object
-		renderTable(objects)
+		groups[row] = group
+		renderTable(groups)
 		sendNotification('is-success','teste Saved',true)
 	}
 
 
-	function cancelEditObject()
+	function cancelEditObject(data)
 	{
 		// row = data[0]
 
@@ -240,7 +221,7 @@ document.getElementById('groupListCreate').innerHTML=""
 		// "</td>" 
 
 		// document.getElementById("tr"+row).innerHTML=html
-		renderTable(objects)
+		renderTable(groups)
 	}
 
 	function openModal(sourceElement)
@@ -297,10 +278,8 @@ document.getElementById('groupListCreate').innerHTML=""
 
 	function closeModal()
 	{
-		// objects = [];
-		// renderTable(objects)
 		document.getElementById('modal').classList.remove('is-active');
-		//sendNotification('is-info','modal was closed',true)
+
 	}
 
 
@@ -330,100 +309,3 @@ document.getElementById('groupListCreate').innerHTML=""
 		document.getElementById('notification').classList.add('is-hidden')
 		
 	}
-
-//TODO add colapse
-
-// if(!objects){
-// 	objects=[]
-// }
-
-// function toFirstUpperCase(stringInput){
-// return stringInput[0].toUpperCase() + stringInput.slice(1);
-// }
-
-// function toCurrency(input){
-// 	return parseFloat(input).toFixed(2)
-// 	}
-// 	function addBRL(input){
-// 		return "R$ "+input
-// 		}
-
-// function getTotal(objects){
-// 	var total = 0;
-// 	var quantidade = 0;
-
-// for (var i in objects){
-// 	total +=objects[i].amount * objects[i].value
-	
-// }
-// quantidade=parseInt(i)+1;
-// return {total: total, quantidade: quantidade}
-// }
-
-// var html = "<tbody>"
-// for(var i in objects){
-// subtotal = objects[i].amount * objects[i].value
-// html += "<tr id=tr"+ i +"><th>"+i+
-// "</th><td>"+toFirstUpperCase(objects[i].desc)+
-// "</td><td>"+objects[i].amount+
-// "</td><td>"+addBRL(toCurrency(objects[i].value))+
-// "</td><td>"+addBRL(toCurrency(subtotal))+
-// "</td><td><button type='a' id = button"+i  + " onclick='editData(this.id)'>Editar</button> | <button type='a' id = button"+i  + " onclick='deleteData(this.id)'>Deletar</button></td></tr>";
-// }
-
-// html += "</tbody>"
-
-// document.getElementById("tabela").getElementsByTagName("tbody")[0].innerHTML = html
-
-// 	// add header do total embaixo
-// 	var thead = document.createElement("thead")
-// 	var trtotal = document.createElement("tr")
-	
-
-// 	for (var i=1;i<7;i++)
-// 	{
-// 		var thdesc2 = document.createElement("th")
-// 		switch (i) {
-// 			case 0:
-// 				thdesc2.innerHTML=getTotal(objects).quantidade
-// 				break;
-// 			case 5:
-// 				thdesc2.innerHTML=addBRL(toCurrency(getTotal(objects).total))
-// 				break;
-			
-// 			default:
-// 				thdesc2.innerHTML="-"
-// 				break;
-// 		}
-// 		trtotal.appendChild(thdesc2)
-		
-// 	}
-
-// 	thead.appendChild(trtotal)
-// 	document.getElementById("tabela").appendChild (thead)
-	
-// function addData()
-// {
-// var desc = document.getElementById("inputDesc").value
-// var amount = document.getElementById("inputAmount").value
-// var value = document.getElementById("inputValue").value
-// var total = addBRL(toCurrency(amount*value))
-
-
-// objects.push(
-// 	{desc:desc, amount:amount,value:value}
-// )
-
-// localStorage['objects'] = JSON.stringify(objects);
-
-// recalc()
-// resetinputs()
-// var tr = document.createElement("tr")
-// tr.id = "tr"+ (objects.length -1)
-// tr.innerHTML = 	"<th>"+ parseInt(objects.length-1)+"</th>"+
-// 				"<td>"+desc+"</td>"+
-// 				"<td>"+amount+"</td>"+
-// 				"<td>"+value+"</td>"+
-// 				"<td>"+total+"</td>"+
-				
-// 				"<td><button type='a' id = button"+ (objects.length -1)  + " onclick='editData(this.id)'>Editar</button> | <button type='a' id = button"+ (objects.length -1)  + " onclick='deleteData(this.id)'>Deletar</button></td></tr>";

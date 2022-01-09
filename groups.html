@@ -91,16 +91,15 @@
             </p>
           </div>
           <div class="field">
-            <div class="control has-icons-left">
-              <div class="select">
-                <select id ='groupListCreate'>
-                  <option selected>Groups</option>
-                </select>
-              </div>
-              <div class="icon is-small is-left">
-                <i class="fas fa-users"></i>
-              </div>
-            </div>
+            <p class="control is-expanded has-icons-left has-icons-right">
+              <input id="description" class="input is-success" type="text" placeholder="Description">
+              <span class="icon is-small is-left">
+                <i class="fas fa-clipboard"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
           </div>
 
 
@@ -136,13 +135,13 @@
 
     <!-- begin table -->
     <div class="container is-widescreen">  
-        <table class="table is-fullwidth" id="table-peoples">
+        <table class="table is-fullwidth" id="table-groups">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Peso</th>
-                <th>Grupo</th>
+                <th>Descricao</th>
                 <th>Ação</th>
             </tr>
             </thead>
@@ -151,7 +150,7 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Peso</th>
-                <th>Grupo</th>
+                <th>Descricao</th>
                 <th>Ação</th>
             </tr>
             </tfoot>
@@ -195,7 +194,7 @@
 
 <!-- scripts-->
   <script src="js/config.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/groups.js"></script>
   <script src="https://kit.fontawesome.com/1de12a37fa.js" crossorigin="anonymous"></script>
 </body>
 
