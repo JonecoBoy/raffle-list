@@ -90,12 +90,12 @@ function renderTable(groups){
 		'<div class="dropdown-menu" id="dropdown-menu3" role="menu">'+
 		  '<div class="dropdown-content is-small p-1">'+
 		  '<div class="dropdown-item is-small p-1" style="">'+
-			'<a href="#" class="dropdown-item is-small" onclick="confirmDelteObject('+row+')">yes</a>'+
+			'<a href="#" class="dropdown-item is-small" onclick="confirmDeleteObject('+row+')">yes</a>'+
 			  '</div>'+
 			'</div>'+
 			'<div class="dropdown-content is-small p-1">'+
 		  '<div class="dropdown-item is-small p-1">'+
-		  '<a href="#" class="dropdown-item is-small centered" onclick="cancelDelteObject()">no</a>'+
+		  '<a href="#" class="dropdown-item is-small centered" onclick="cancelDeleteObject()">no</a>'+
 			  '</div>'+
 			'</div>'+
 		  '</div>'+
@@ -110,12 +110,12 @@ function renderTable(groups){
 		
 	}
 
-	function cancelDelteObject(){
+	function cancelDeleteObject(){
 		var botao = document.getElementById('confirmButton')
 		botao.parentNode.removeChild(botao)
 	}
 
-	function confirmDelteObject(row){
+	function confirmDeleteObject(row){
 		var botao = document.getElementById('confirmButton')
 		botao.parentNode.removeChild(botao)
 		row = parseInt(row-1)
