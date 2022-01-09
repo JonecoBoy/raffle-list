@@ -1,25 +1,36 @@
 // let objects = JSON.parse(localStorage.getItem["list1"]) : []
 
-let groups = JSON.parse(localStorage.getItem("groups"))
+let lists = JSON.parse(localStorage.getItem("lists"))
+// let lists = [
+// 	{name: 'lista1', 
+// 	 description: 'desc1',
+// 	 list: [{name: 'name1' , weight: 'weight1' , group: 'group1'},{name: 'name1' , weight: 'weight1' , group: 'group1'}]
+// 	},
+// 	{name: 'lista2', 
+// 	description: 'desc2',
+// 	list: []
+//    },
+//    {name: 'lista3', 
+//    description: 'desc3',
+//    list: []
+//   }
+// ]
 
-!groups ? groups=[] : 
+!lists ? lists=[] : 
+
+renderTable(lists)
 
 
-
-renderTable(groups)
-
-
-function renderTable(groups){
-	let body = document.getElementById("table-groups").getElementsByTagName("tbody")[0]
+function renderTable(lists){
+	let body = document.getElementById("table-lists").getElementsByTagName("tbody")[0]
 	
 	let html = "";
-	groups.forEach(function(value,index)
+	lists.forEach(function(value,index)
 	{
 		index = index+1;
 		html +=  "<tr id=tr"+index+" onMouseOver='colorSelected(event.type,this.id)' onMouseOut='colorSelected(event.type,this.id)'>" +
 				"<td>"+ index +"</td>" +
 				"<td>"+value.name+"</td>" +
-				"<td>"+value.weight+"</td>" +
 				"<td>"+value.description+"</td>" +
 				"<td>" +
 				"<div class='buttons'>" +
@@ -61,15 +72,16 @@ function renderTable(groups){
 	function createObject()
 	{
 		let name = document.getElementById("name").value
-		let weight = document.getElementById("weight").value
+		
 		let description = document.getElementById("description").value
 		
-		groups.push({name: name, weight: weight, description: description})
+		lists.push({name: name, description: description,list:[]})
 
-		renderTable(groups)
+		renderTable(lists)
 
 		document.getElementById('modal').classList.remove('is-active');
 		sendNotification('is-success', name + ' added',true)
+		saveList()
 	}
 
 	function deleteObject(row)
@@ -90,7 +102,7 @@ function renderTable(groups){
 		'<div class="dropdown-menu" id="dropdown-menu3" role="menu">'+
 		  '<div class="dropdown-content is-small p-1">'+
 		  '<div class="dropdown-item is-small p-1" style="">'+
-			'<a href="#" class="dropdown-item is-small" onclick="confirmDelteObject('+row+')">yes</a>'+
+			'<a href="#" class="dropdown-item is-small" onclick="confirmDeleteObject('+row+')">yes</a>'+
 			  '</div>'+
 			'</div>'+
 			'<div class="dropdown-content is-small p-1">'+
@@ -115,34 +127,35 @@ function renderTable(groups){
 		botao.parentNode.removeChild(botao)
 	}
 
-	function confirmDelteObject(row){
+	function confirmDeleteObject(row){
 		var botao = document.getElementById('confirmButton')
 		botao.parentNode.removeChild(botao)
 		row = parseInt(row-1)
 		
-		let deleteObject = groups[row]
-		groups.splice(row,1)
+		let deleteObject = lists[row]
+		lists.splice(row,1)
 		console.log(deleteObject)
-		renderTable(groups)
+		renderTable(lists)
 		document.getElementById('modal').classList.remove('is-active');
 		sendNotification('is-warning',deleteObject.name +' removed',true)
+		saveList()
 	}
 
 	function deleteList()
 	{
-		groups = [];
-	   renderTable(groups)
+		lists = [];
+	   renderTable(lists)
 	   closeModal()
-	   sendNotification('is-danger','List deleted',false)
+	   sendNotification('is-danger','Lists deleted',false)
 		
 		
 	}
 
 	function saveList()
 	{
-		localStorage.setItem('groups', JSON.stringify(groups))
+		localStorage.setItem('lists', JSON.stringify(lists))
 		document.getElementById('modal').classList.remove('is-active');
-		sendNotification('is-success','List Saved',false)
+		//sendNotification('is-success','List Saved',false)
 		
 	}
 
@@ -154,7 +167,7 @@ function renderTable(groups){
 
 		tr.childNodes.forEach(function(value,index){
 			if(index!=0){
-			if (index <4){
+			if (index <3){
 				data [index] = value.innerHTML
 			value.innerHTML= '<input class="input is-small" type="text" placeholder="Small input" value ="'+value.innerHTML+'">'
 			}
@@ -175,39 +188,19 @@ function renderTable(groups){
 		row = row-1
 		console.log(tr)
 		let name = tr.getElementsByTagName("input")[0].value
-		let weight = tr.getElementsByTagName("input")[1].value
-		let description = tr.getElementsByTagName("input")[2].value
-		
-		group = {
-					name: 	name,
-					weight: weight,
-					description:	description,
-		}
+		let description = tr.getElementsByTagName("input")[1].value
 
-
-		groups[row] = group
-		renderTable(groups)
+		lists[row].name = name
+		lists[row].description = description
+		renderTable(lists)
 		sendNotification('is-success','teste Saved',true)
+		saveList()
 	}
 
 
 	function cancelEditObject(data)
 	{
-		// row = data[0]
-
-		// html = "<td>"+ row +"</td>" +
-		// "<td>"+row+"</td>" +
-		// "<td>"+row+"</td>" +
-		// "<td>"+row+"</td>" +
-		// "<td>" +
-		// "<div class='buttons'>" +
-		// "<button class='button is-info is-small is-light' onclick=editObject('"+row+"')>edit</button>" +
-		// "<button class='button is-danger is-small is-light' onclick=deleteObject('"+row+"')>deletar</button>" +
-		// "</div>" +
-		// "</td>" 
-
-		// document.getElementById("tr"+row).innerHTML=html
-		renderTable(groups)
+		renderTable(lists)
 	}
 
 	function openModal(sourceElement)

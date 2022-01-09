@@ -104,7 +104,7 @@ document.getElementById('groupListCreate').innerHTML=""
 		'<div class="dropdown-menu" id="dropdown-menu3" role="menu">'+
 		  '<div class="dropdown-content is-small p-1">'+
 		  '<div class="dropdown-item is-small p-1" style="">'+
-			'<a href="#" class="dropdown-item is-small" onclick="confirmDelteObject('+row+')">yes</a>'+
+			'<a href="#" class="dropdown-item is-small" onclick="confirmDeleteObject('+row+')">yes</a>'+
 			  '</div>'+
 			'</div>'+
 			'<div class="dropdown-content is-small p-1">'+
@@ -129,7 +129,7 @@ document.getElementById('groupListCreate').innerHTML=""
 		botao.parentNode.removeChild(botao)
 	}
 
-	function confirmDelteObject(row){
+	function confirmDeleteObject(row){
 		var botao = document.getElementById('confirmButton')
 		botao.parentNode.removeChild(botao)
 		row = parseInt(row-1)
